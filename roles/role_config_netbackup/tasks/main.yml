@@ -4,7 +4,7 @@
     - set_fact:
         run_playbook: |
           {% if action == 'Configurar_NetBackup' %}
-          ['chknbidhlx']
+          ['s0chknbidhlx']
           {% elif actions == 'Instalar' %}
           ['ticket/helix','preconfig/{{ plataforma }}{{ systemos }}','instalar/{{ plataforma }}{{ systemos }}','postconfig/{{ plataforma }}{{ systemos }}']
           {% elif actions == 'Actualizar' %}
