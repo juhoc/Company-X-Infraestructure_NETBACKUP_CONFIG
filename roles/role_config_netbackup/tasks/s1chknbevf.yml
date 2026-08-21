@@ -1,0 +1,20 @@
+---
+- block:
+    - name: Verificar si existe le archivo lectura version NetBackup
+      stat:
+        path: /usr/openv/netbackup/bin/version
+      register: nbu_file
+
+    - set_fact:
+        run_playbook: |
+          {% if nbu_file.stat.exists %}
+          ['pruebaonce/s2chknbrvf','pruebaonce/s4chknbipr']
+          {% else %}
+          ['pruebaonce/s3chknbcvf']
+          {% endif %}
+    
+    - name: Ejecutar tareas NetBackup
+      include_tasks: "{{ tareas1 }}.yml"
+      loop: "{{ run_playbook | from_yaml }}"
+      loop_control:
+        loop_var: tareas1

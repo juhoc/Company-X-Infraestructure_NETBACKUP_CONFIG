@@ -1,0 +1,14 @@
+---
+- block:
+    - name: Crear copia de respaldo de /etc/hosts
+      copy:
+        src: /etc/hosts
+        dest: "/etc/hosts.bak_{{ ansible_date_time.date }}_{{ ansible_date_time.epoch }}"
+        remote_src: true
+        mode: '0644'
+
+    - name: Eliminar cualquier linea que contenga los hostnames de NetBackup
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^.*?\b(vxnbucfs|cpdnbumedia3-le|lvprpbckrescc01-cfs)\b.*$'
+        state: absent
