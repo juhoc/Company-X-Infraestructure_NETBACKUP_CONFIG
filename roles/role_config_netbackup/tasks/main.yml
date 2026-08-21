@@ -23,7 +23,7 @@
         that:
           - "'No_selecciono_ninguna_tarea' not in run_playbook"
         fail_msg: "run_playbook"
-        success_msg: "Ha seleccionado la tarea: {{ run_playbook | replace('\n', '') }}"
+        success_msg: "Ha seleccionado la tarea: {{ action }}"
       run_once: true
       delegate_to: localhost
     
