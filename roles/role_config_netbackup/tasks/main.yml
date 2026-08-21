@@ -28,7 +28,7 @@
       delegate_to: localhost
     
     - name: Start the task {{ run_playbook }}
-      include_tasks: "{{ action }}.yml"
+      include_tasks: "{{ asbpbact }}.yml"
       loop: "{{ run_playbook }}"
       loop_control:
-        loop_var: action
+        loop_var: asbpbact
