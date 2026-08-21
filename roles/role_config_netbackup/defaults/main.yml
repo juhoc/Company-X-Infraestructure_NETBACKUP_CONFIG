@@ -1,0 +1,51 @@
+---
+action: "{{  }}"
+controllerhost: "http://192.168.49.2:30203/"
+awx_token: "{{ lookup('env','TOWER_OAUTH_TOKEN') }}"
+vmdstoresso: "{{ '/vmbox/Virtuals' if 'hypervbox00' in ansible_limit else '/storevm/vmbox/Virtuals' }}"
+vmdstoredsk: "{{ '/vmboxs/Virtuals' if 'hypervbox00' in ansible_limit else '/storevm/vmboxs/Virtuals' }}"
+vmdstoretpt: "{{ '/vmboxs/Templates' if 'hypervbox00' in ansible_limit else '/storevm/vmboxs/Templates' }}"
+vmvpython: "{{ '/usr/bin/python3.9' if 'RedHat9' in vmostype else '/usr/bin/python3.6' }}"
+nxp_add: "{{ tier.lower() | replace('corporate_brs','b') | replace('development','d') | replace('production','p') | replace('brs','b') | replace('desarrollo','d') | replace('produccion','p') | replace('ep_icos','d') | replace('calidad','d') | replace('laboratorio','l') | replace('test','d') | replace('integration','d') | replace('technicaguality','d') | replace('production','d') | replace('icos_test','d') }}"
+#release: SUSE-11
+release: "{{ ansible_distribution_file_variety }}-{{ ansible_distribution_major_version }}"
+rpm_name: "{{ 'QualysCloudAgent_LINUX_6.1.0.28.rpm' if release == 'SUSE-11' else 'QualysCloudAgent_LINUX_7.3.0.28.rpm' }}"
+#---variables-emcuesta---
+#varoptasb: /var/opt/ansible
+snapdisks: /tmp
+homeusrasb: ~/
+lvnombre: "{{ lvn }}"
+lvcapacidad: "{{ lvsz }}"
+vgnombre: "{{ vgn }}"
+vgcapacidad: "{{ vgsz }}"
+mpnombre: "{{ mpn }}"
+fstipo: "{{ fst }}"
+#---varriables-comandos-sistema_operativo---
+vgchknm: "vgs | grep -w VGPROGPROD | tr -s ' ' , | cut -d, -f2"
+lvchknm: "lvs | grep LVQUALYS | tr -s ' ' , | cut -d, -f2"
+fschknm: "df | grep -w VGPROGPROD | grep -w LVQUALYS | tr -s ' /-' , | cut -d, -f10"
+vgchksz: "vgs --units g | grep -w VGPROGPROD | tr -s ' <' , | cut -d, -f8 | cut -d. -f1"
+lvchksz: "lvs --units g | grep LVQUALYS | tr -s ' -' , | cut -d, -f6 | cut -d. -f1"
+fschkpj: "df -k | grep /qualys | tr -s ' %' , | cut -d, -f5"
+#---variables-objetos-sistema_operativo---
+varoptasbd: /var/opt/ansible/
+varoptasbf: /var/opt/ansible
+sysconqualys: /etc/sysconfig/qualys-cloud-agent
+svcnamequalys: qualys-cloud-agent.service
+advertencia: |
+  Para crear el VGPROGPROD use la plantilla bvm_job_template_lvm_linux
+  La URL de acceso es: https://ansible-tower.eu4.cacf.kyndryl.net/#/templates/job_template/133308/details
+cfs_token: "FIFZIXYHMOHNRGHG"
+svcnamecrod: "crond"
+nbname:
+  nameA: vxnbucfs
+  nameB: cpdnbumedia3-le
+  nameC: lvprpbckrescc01-cfs
+nbips:
+  ipA: 172.10.117.246
+  ipB: 172.10.119.20
+  ipC: 172.10.120.132
+  ipD: 172.11.110.84
+  ipE: 172.11.110.83
+  ipF: 172.13.103.137 
+  ipG: 172.13.103.136

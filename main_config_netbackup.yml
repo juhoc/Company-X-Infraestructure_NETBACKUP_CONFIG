@@ -1,1 +1,9 @@
 ---
+- name: PlayBook Maestro - Instalacion y actualizacion Veritas NetBackup
+  hosts: all
+  gather_facts: true
+#  strategy: serial
+
+  tasks:
+    - include_role:
+        name: role_config_netbackup

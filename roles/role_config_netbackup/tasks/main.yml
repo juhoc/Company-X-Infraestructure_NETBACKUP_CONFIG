@@ -1,1 +1,34 @@
 ---
+- name: Tasks by blocks - ID Helix format validation
+  block:
+    - set_fact:
+        run_playbook: |
+          {% if actions == 'Configuracion_NetBackup' %}
+          ['chknbidhlx']
+          {% elif actions == 'Instalar' %}
+          ['ticket/helix','preconfig/{{ plataforma }}{{ systemos }}','instalar/{{ plataforma }}{{ systemos }}','postconfig/{{ plataforma }}{{ systemos }}']
+          {% elif actions == 'Actualizar' %}
+          ['ticket/helix','preconfig/{{ plataforma }}{{ systemos }}','instalar/{{ plataforma }}{{ systemos }}','postconfig/{{ plataforma }}{{ systemos }}']
+          {% elif actions == 'Validar' %}
+          ['ticket/helix','{{ acciones }}/{{ plataforma }}{{ systemos }}']
+          {% elif actions == 'Probar' %}
+          ['ticket/helix','{{ acciones }}/{{ plataforma }}{{ systemos }}']
+          {% else %}
+          ['No_selecciono_ninguna_tarea']
+          {% endif %}
+    
+    - name: Select Result
+      become: true
+      assert:
+        that:
+          - "'No_selecciono_ninguna_tarea' not in run_playbook"
+        fail_msg: "run_playbook"
+        success_msg: "Ha seleccionado la tarea: {{ run_playbook | replace('\n', '') }}"
+      run_once: true
+      delegate_to: localhost
+    
+    - name: Start the task {{ run_playbook }}
+      include_tasks: "{{ action }}.yml"
+      loop: "{{ run_playbook }}"
+      loop_control:
+        loop_var: action
