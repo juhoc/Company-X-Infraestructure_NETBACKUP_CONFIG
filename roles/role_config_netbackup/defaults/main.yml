@@ -1,5 +1,5 @@
 ---
-action: "{{  }}"
+action: "{{ actions | replace(' ','_') }}"
 controllerhost: "http://192.168.49.2:30203/"
 awx_token: "{{ lookup('env','TOWER_OAUTH_TOKEN') }}"
 vmdstoresso: "{{ '/vmbox/Virtuals' if 'hypervbox00' in ansible_limit else '/storevm/vmbox/Virtuals' }}"
