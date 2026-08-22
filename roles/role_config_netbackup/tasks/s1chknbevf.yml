@@ -8,13 +8,13 @@
     - set_fact:
         run_playbook: |
           {% if nbu_file.stat.exists %}
-          ['pruebaonce/s2chknbrvf','pruebaonce/s4chknbipr']
+          ['s2chknbrvf','s4chknbipr']
           {% else %}
-          ['pruebaonce/s3chknbcvf']
+          ['s3chknbcvf']
           {% endif %}
     
     - name: Ejecutar tareas NetBackup
-      include_tasks: "{{ tareas1 }}.yml"
+      include_tasks: "{{ asbpbact1 }}.yml"
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
-        loop_var: tareas1
+        loop_var: asbpbact1
