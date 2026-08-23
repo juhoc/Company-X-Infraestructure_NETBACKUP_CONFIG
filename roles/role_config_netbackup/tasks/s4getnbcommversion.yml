@@ -12,36 +12,9 @@
 
     - name: Formatear versión de NetBackup
       set_fact:
-        nbchkrfc: "{{ nbchkcv.stdout | trim }}"
+        nbcversion: "{{ nbchkcv.stdout | trim }}"
 
     - name: Evaluar si requiere gestión de certificados (Versión >= 8.2)
       set_fact:
         applies_certs: "{{ nbcversion is version('8.2', '>=') }}"
 
-
-# chdir: Change into this directory before running the 
-# cmd: The command to run followed by optional 
-# creates: A filename, when it already exists, this step 
-# executable: Change the shell used to execute the command. 
-# free_form: The shell module takes a free form command to 
-# removes: A filename, when it does not exist, this step 
-# stdin: Set the stdin of the command directly to the 
-# stdin_add_newline: Whether to append a newline to stdin data. 
-# warn: Whether to enable task warnings. 
-- name: Name for shell module.
-  shell:
-   chdir: "#"
-   cmd: "#"
-   creates: "#"
-   executable: "#"
-   free_form: "#"
-   removes: "#"
-   stdin: "#"
-   stdin_add_newline: "#"
-   warn: "#"
-   become: true 
-   become_method: su 
-   become_user: nobody 
-   become_flags: "-s /bin/sh" 
-   when: variable is defined 
-   with_items: array 
