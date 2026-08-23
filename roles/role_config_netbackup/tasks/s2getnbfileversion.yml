@@ -1,8 +1,10 @@
 ---
 - block:
     - name: Leer versión del cliente NetBackup
-      command: "cat {{ nbfile }}"
-      register: nbchkfv
+      shell: "cat version | {{ nbparamfv }}"
+      register: nbchkrfv
+      args:
+        chdir: "{{ nbbin }}"
       changed_when: false
 
     - name: Formatear versión de NetBackup
