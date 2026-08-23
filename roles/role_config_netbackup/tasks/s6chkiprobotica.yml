@@ -1,0 +1,14 @@
+---
+- block:
+    - name: Obtener IP Robótica o Datos para definir el sufijo del cliente
+      set_fact:
+        nbkchpiprbt: >-
+          {{
+            ansible_all_ipv4_addresses
+            | select('regex', '^172[.](10|11|13)[.]')
+            | list
+          }}
+
+    - name: Definir sufijo de cliente (_nbu o sin sufijo)
+      set_fact:
+        nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"

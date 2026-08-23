@@ -9,6 +9,6 @@
 
     - name: Eliminar cualquier linea que contenga los hostnames de NetBackup
       lineinfile:
-        path: /etc/hosts
+        path: "{{ filehosts }}"
         regexp: '^.*?\b(vxnbucfs|cpdnbumedia3-le|lvprpbckrescc01-cfs)\b.*$'
         state: absent
