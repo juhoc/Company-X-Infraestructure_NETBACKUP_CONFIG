@@ -2,7 +2,7 @@
 - block:
     - name: Verificar si existe le archivo lectura version NetBackup
       stat:
-        path: "{{ nbcommand }}"
+        path: "{{ nbcommand }} | {{ nbparam }}"
       register: nbu_comm
 
     - set_fact:
