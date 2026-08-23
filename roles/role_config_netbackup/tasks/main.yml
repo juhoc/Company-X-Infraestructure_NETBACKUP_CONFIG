@@ -4,7 +4,7 @@
     - set_fact:
         run_playbook: |
           {% if action == 'Configurar_NetBackup' %}
-          ['s0chkidhelix','s1chknbfileversion']
+          ['s0chkidhelix']
           {% else %}
           ['No_selecciono_ninguna_tarea']
           {% endif %}
