@@ -17,6 +17,5 @@
       include_tasks: "{{ asbpbact1 }}.yml"
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
-      loop_control:
         loop_var: asbpbact1
 
