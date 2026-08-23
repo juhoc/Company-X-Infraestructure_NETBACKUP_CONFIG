@@ -1,9 +1,9 @@
 ---
 filehosts: "/etc/hosts"
 nbfile: "/usr/openv/netbackup/bin/version"
+nbparam: grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="NetBackup") print $(i+1)}'
 nbcommand: "/usr/openv/netbackup/bin/nbgetconfig"
 nbbin: "/usr/openv/netbackup/bin"
-
 
 action: "{{ actions | replace(' ','_') }}"
 controllerhost: "http://192.168.49.2:30203/"
