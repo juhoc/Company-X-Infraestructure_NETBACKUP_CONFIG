@@ -2,19 +2,19 @@
 - block:
     - name: Verificar si existe le archivo lectura version NetBackup
       stat:
-        path: /usr/openv/netbackup/bin/version
-      register: nbu_file
+        path: "{{ nbcommand }}"
+      register: nbu_comm
 
     - set_fact:
         run_playbook: |
-          {% if nbu_file.stat.exists %}
-          ['s2chknbrvf','s4chknbipr']
+          {% if nbu_comm.stat.exists %}
+          ['s3chknbcommgetversion','s5chkiprobotica']
           {% else %}
-          ['s3chknbcvf']
+          ['s4msgnbcmfailed']
           {% endif %}
     
     - name: Ejecutar tareas NetBackup
-      include_tasks: "{{ asbpbact1 }}.yml"
+      include_tasks: "{{ asbpbact2 }}.yml"
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
-        loop_var: asbpbact1
+        loop_var: asbpbact2

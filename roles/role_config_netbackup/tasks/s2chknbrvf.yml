@@ -1,7 +1,7 @@
 ---
 - block:
     - name: Leer versión del cliente NetBackup
-      command: cat /usr/openv/netbackup/bin/version
+      command: "cat {{ nbfile }}"
       register: nbchkrfv
       changed_when: false
 

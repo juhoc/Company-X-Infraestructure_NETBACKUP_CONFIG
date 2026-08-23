@@ -1,0 +1,16 @@
+---
+- block:
+    - name: Obtener version comando NetBackup
+      shell: nbgetconfig | grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="\"NetBackup\"") print $(i+1)}' | tr -d '"'
+      register: nbchkcv
+      args:
+        chdir: "{{ nbbin }}"
+      changed_when: false
+
+    - name: Formatear versión de NetBackup
+      set_fact:
+        nbchkrfc: "{{ nbchkcv.stdout | trim }}"
+
+    - name: Evaluar si requiere gestión de certificados (Versión >= 8.2)
+      set_fact:
+        applies_certs: "{{ nbcversion is version('8.2', '>=') }}"

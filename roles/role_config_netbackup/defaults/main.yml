@@ -1,4 +1,10 @@
 ---
+filehosts: "/etc/hosts"
+nbfile: "/usr/openv/netbackup/bin/version"
+nbcommand: "/usr/openv/netbackup/bin/nbgetconfig"
+nbbin: "/usr/openv/netbackup/bin"
+
+
 action: "{{ actions | replace(' ','_') }}"
 controllerhost: "http://192.168.49.2:30203/"
 awx_token: "{{ lookup('env','TOWER_OAUTH_TOKEN') }}"

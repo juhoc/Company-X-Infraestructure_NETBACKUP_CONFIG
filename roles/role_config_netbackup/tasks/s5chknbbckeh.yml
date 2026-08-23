@@ -2,7 +2,7 @@
 - block:
     - name: Crear copia de respaldo de /etc/hosts
       copy:
-        src: /etc/hosts
+        src: "{{ filehosts }}"
         dest: "/etc/hosts.bak_{{ ansible_date_time.date }}_{{ ansible_date_time.epoch }}"
         remote_src: true
         mode: '0644'

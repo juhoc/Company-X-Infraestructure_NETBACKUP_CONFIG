@@ -4,15 +4,7 @@
     - set_fact:
         run_playbook: |
           {% if action == 'Configurar_NetBackup' %}
-          ['s0chkidhelix']
-          {% elif actions == 'Instalar' %}
-          ['ticket/helix','preconfig/{{ plataforma }}{{ systemos }}','instalar/{{ plataforma }}{{ systemos }}','postconfig/{{ plataforma }}{{ systemos }}']
-          {% elif actions == 'Actualizar' %}
-          ['ticket/helix','preconfig/{{ plataforma }}{{ systemos }}','instalar/{{ plataforma }}{{ systemos }}','postconfig/{{ plataforma }}{{ systemos }}']
-          {% elif actions == 'Validar' %}
-          ['ticket/helix','{{ acciones }}/{{ plataforma }}{{ systemos }}']
-          {% elif actions == 'Probar' %}
-          ['ticket/helix','{{ acciones }}/{{ plataforma }}{{ systemos }}']
+          ['s0chkidhelix','s1chknbfileversion']
           {% else %}
           ['No_selecciono_ninguna_tarea']
           {% endif %}

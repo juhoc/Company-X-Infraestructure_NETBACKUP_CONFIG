@@ -11,7 +11,7 @@
 
     - name: Actualizar /etc/hosts para segmento 172.11.x.x
       blockinfile:
-        path: /etc/hosts
+        path: "{{ filehosts }}"
         marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS 172.11"
         block: |
           172.11.110.84 vxnbucfs

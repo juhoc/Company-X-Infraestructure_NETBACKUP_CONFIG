@@ -11,7 +11,7 @@
 
     - name: Actualizar /etc/hosts para equipos sin IP Robótica (150.100.x.x)
       blockinfile:
-        path: /etc/hosts
+        path: "{{ filehosts }}"
         marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS DATA IP"
         block: |
           150.100.246.180 vxnbucfs

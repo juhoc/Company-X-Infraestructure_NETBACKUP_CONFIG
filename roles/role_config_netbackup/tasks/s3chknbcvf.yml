@@ -2,7 +2,7 @@
 - block:
     - name: Crear directorio /usr/openv/netbackup/bin NetBackup
       file:
-        path: /usr/openv/netbackup/bin
+        path: "{{ nbbin }}"
         state: directory
         mode: '0755'
 
