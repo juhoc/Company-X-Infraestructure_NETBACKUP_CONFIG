@@ -12,9 +12,9 @@
 
     - name: Formatear versión de NetBackup
       set_fact:
-        nbcversion: "{{ nbchkcv.stdout | trim }}"
+        nbversion: "{{ nbchkcv.stdout | trim }}"
 
     - name: Evaluar si requiere gestión de certificados (Versión >= 8.2)
       set_fact:
-        applies_certs: "{{ nbcversion is version('8.2', '>=') }}"
+        applies_certs: "{{ nbversion is version('8.2', '>=') }}"
 
