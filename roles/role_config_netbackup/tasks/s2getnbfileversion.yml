@@ -9,7 +9,8 @@
 
     - name: Formatear versión de NetBackup
       set_fact:
-        nbcversion: "{{ nbchkfv.stdout | regex_search('([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+\\.[0-9]+)') }}"
+        nbversion: "{{ nbchkrfv.stdout | trim }}"
+#        nbcversion: "{{ nbchkfv.stdout | regex_search('([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+\\.[0-9]+)') }}"
 
     - name: Evaluar si requiere gestión de certificados (Versión >= 8.2)
       set_fact:
