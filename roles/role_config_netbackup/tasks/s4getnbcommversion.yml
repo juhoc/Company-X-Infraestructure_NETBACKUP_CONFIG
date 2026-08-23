@@ -2,7 +2,7 @@
 - block:
     - name: Obtener version comando NetBackup
       become: true
-      shell: "nbgetconfig | {{ nbparam }}"
+      shell: "nbgetconfig | {{ nbparamcm }}"
       register: nbchkcv
       args:
         chdir: "{{ nbbin }}"
