@@ -1,7 +1,8 @@
 ---
 filehosts: "/etc/hosts"
 nbfile: "/usr/openv/netbackup/bin/version"
-nbparam: grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="NetBackup") print $(i+1)}'
+nbparamcm: grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="NetBackup") print $(i+1)}'
+nbparamfv: tr -s ' ' '\n' | tail -1
 nbcommand: "/usr/openv/netbackup/bin/nbgetconfig"
 nbbin: "/usr/openv/netbackup/bin"
 

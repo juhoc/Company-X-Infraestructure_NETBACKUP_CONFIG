@@ -1,13 +1,16 @@
 ---
 - block:
     - name: Leer versión del cliente NetBackup
-      command: "cat {{ nbfile }}"
+      shell: "cat version | {{ nbparamfv }}"
       register: nbchkrfv
+      args:
+        chdir: "{{ nbbin }}"
       changed_when: false
 
     - name: Formatear versión de NetBackup
       set_fact:
-        nbversion: "{{ nbchkrfv.stdout | regex_search('([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+\\.[0-9]+)') }}"
+        nbversion: "{{ nbchkrfv.stdout | trim }}"
+#        nbversion: "{{ nbchkrfv.stdout | regex_search('([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+\\.[0-9]+)') }}"
 
     - name: Evaluar si requiere gestión de certificados (Versión >= 8.2)
       set_fact:
