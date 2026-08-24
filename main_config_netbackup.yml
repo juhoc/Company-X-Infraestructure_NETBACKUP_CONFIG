@@ -1,5 +1,5 @@
 ---
-- name: PlayBook Maestro - Instalacion y actualizacion Veritas NetBackup
+- name: PlayBook Maestro - Configuración Cliente NetBackup por Migración
   hosts: all
   gather_facts: true
 #  strategy: serial
