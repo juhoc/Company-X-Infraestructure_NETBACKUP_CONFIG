@@ -9,6 +9,10 @@
             | list
           }}
 
+    - name: Definir sufijo de cliente (_nbu o sin sufijo)
+      set_fact:
+        nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"
+
     - set_fact:
         run_playbook: |
           {% if nbkchpiprbt[0].startswith('172.10') %}
@@ -28,7 +32,3 @@
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
         loop_var: asbpbact3
-
-    # - name: Definir sufijo de cliente (_nbu o sin sufijo)
-    #   set_fact:
-    #     nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"
