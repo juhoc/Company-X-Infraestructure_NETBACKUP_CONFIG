@@ -12,17 +12,17 @@
     - set_fact:
         run_playbook: |
           {% if nbkchpiprbt[0].startswith('172.10') %}
-          ['pruebaonce/s5chknbehf17210']
+          ['s10chknbehf17210']
           {% elif nbkchpiprbt[0].startswith('172.11') %}
-          ['pruebaonce/s5chknbehf17211']
+          ['s10chknbehf17211']
           {% elif nbkchpiprbt[0].startswith('172.13') %}
-          ['pruebaonce/s5chknbehf17213']
+          ['s10chknbehf17213']
           {% else %}
-          ['pruebaonce/s5chknbehf150xxx']
+          ['s10chknbehf150xxx']
           {% endif %}
     
     - name: Ejecutar tareas NetBackup
-      include_tasks: "{{ tareas2 }}.yml"
+      include_tasks: "{{ asbpbact3 }}.yml"
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
-        loop_var: tareas2
+        loop_var: asbpbact3

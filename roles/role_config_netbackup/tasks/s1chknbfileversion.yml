@@ -8,7 +8,7 @@
     - set_fact:
         run_playbook: |
           {% if nbu_file.stat.exists %}
-          ['s2getnbfileversion','s6chkiprobotica','s7bckfilehosts','s8prgfilehosts']
+          ['s2getnbfileversion','s6chkiprobotica','s7bckfilehosts','s8prgfilehosts','s9addnbmscipsrbfilehosts']
           {% else %}
           ['s3chknbcomm']
           {% endif %}
