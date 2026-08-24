@@ -1,5 +1,5 @@
 ---
-- name: Tasks by blocks - ID Helix format validation
+- name: PlayBook - Configuracion Clientes NetBackup
   block:
     - set_fact:
         run_playbook: |
@@ -9,7 +9,7 @@
           ['No_selecciono_ninguna_tarea']
           {% endif %}
     
-    - name: Select Result
+    - name: Condicion de tareas Clientes NetBackup
       become: true
       assert:
         that:
@@ -19,7 +19,7 @@
       run_once: true
       delegate_to: localhost
     
-    - name: Start the task {{ run_playbook }}
+    - name: La(s) tarea(s) seleccionar es {{ run_playbook }}
       include_tasks: "{{ asbpbact }}.yml"
       loop: "{{ run_playbook }}"
       loop_control:
