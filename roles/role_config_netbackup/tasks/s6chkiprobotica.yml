@@ -9,6 +9,26 @@
             | list
           }}
 
-    - name: Definir sufijo de cliente (_nbu o sin sufijo)
-      set_fact:
-        nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"
+    - set_fact:
+        run_playbook: |
+          {% if nbkchpiprbt[0].startswith('172.10') %}
+          ['s10chknbehf17210']
+          {% elif nbkchpiprbt[0].startswith('172.11') %}
+          ['s10chknbehf17211']
+          {% elif nbkchpiprbt[0].startswith('172.13') %}
+          ['s10chknbehf17213']
+          {% elif nbkchpiprbt[0].startswith('150.') %}
+          ['s10chknbehf150xxx']
+          {% else %}
+          ['s5msgnbcmfailed']
+          {% endif %}
+    
+    - name: Ejecutar tareas NetBackup
+      include_tasks: "{{ asbpbact3 }}.yml"
+      loop: "{{ run_playbook | from_yaml }}"
+      loop_control:
+        loop_var: asbpbact3
+
+    # - name: Definir sufijo de cliente (_nbu o sin sufijo)
+    #   set_fact:
+    #     nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"

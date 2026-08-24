@@ -8,7 +8,7 @@
     - set_fact:
         run_playbook: |
           {% if nbu_file.stat.exists %}
-          ['s2getnbfileversion','s6chkiprobotica','s7bckfilehosts','s8prgfilehosts','s9addnbmscipsrbfilehosts']
+          ['s2getnbfileversion','s6chkiprobotica']
           {% else %}
           ['s3chknbcomm']
           {% endif %}
@@ -19,3 +19,4 @@
       loop_control:
         loop_var: asbpbact1
 
+#,'s7bckfilehosts','s8prgfilehosts','s9addnbmscipsrbfilehosts'
