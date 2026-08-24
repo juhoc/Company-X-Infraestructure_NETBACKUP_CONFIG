@@ -13,7 +13,8 @@
       set_fact:
         nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"
 
-    - set_fact:
+    - name: Tercera condición, validar IP Robótica o IP Servicio
+      set_fact:
         run_playbook: |
           {% if nbkchpiprbt[0].startswith('172.10') %}
           ['s10chknbehf17210']

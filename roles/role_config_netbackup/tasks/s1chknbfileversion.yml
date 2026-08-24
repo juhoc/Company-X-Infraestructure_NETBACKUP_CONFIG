@@ -1,11 +1,12 @@
 ---
 - block:
-    - name: Verificar si existe le archivo version NetBackup
+    - name: Verificar si existe le archivo versión NetBackup
       stat:
         path: "{{ nbfile }}"
       register: nbu_file
 
-    - set_fact:
+    - name: Primera condición, validar archivo o comando versión NetBackup
+      set_fact:
         run_playbook: |
           {% if nbu_file.stat.exists %}
           ['s2getnbfileversion','s6chkiprobotica']
@@ -13,7 +14,7 @@
           ['s3chknbcomm']
           {% endif %}
     
-    - name: Ejecutar tareas NetBackup
+    - name: Ejecutar tareas NetBackup en base a condiciones
       include_tasks: "{{ asbpbact1 }}.yml"
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
