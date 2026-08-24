@@ -1,0 +1,28 @@
+---
+- block:
+    # - name: Obtener IP Robótica o Datos para definir el sufijo del cliente
+    #   set_fact:
+    #     nbkchpiprbt: >-
+    #       {{
+    #         ansible_all_ipv4_addresses
+    #         | select('regex', '^172[.](10|11|13)[.]')
+    #         | list
+    #       }}
+
+    - set_fact:
+        run_playbook: |
+          {% if nbkchpiprbt[0].startswith('172.10') %}
+          ['pruebaonce/s5chknbehf17210']
+          {% elif nbkchpiprbt[0].startswith('172.11') %}
+          ['pruebaonce/s5chknbehf17211']
+          {% elif nbkchpiprbt[0].startswith('172.13') %}
+          ['pruebaonce/s5chknbehf17213']
+          {% else %}
+          ['pruebaonce/s5chknbehf150xxx']
+          {% endif %}
+    
+    - name: Ejecutar tareas NetBackup
+      include_tasks: "{{ tareas2 }}.yml"
+      loop: "{{ run_playbook | from_yaml }}"
+      loop_control:
+        loop_var: tareas2

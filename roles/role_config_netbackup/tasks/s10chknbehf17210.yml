@@ -1,0 +1,29 @@
+---
+- block:
+    # - name: Obtener IP Robótica o Datos para definir el sufijo del cliente
+    #   set_fact:
+    #     nbkchpiprbt: >-
+    #       {{
+    #         ansible_all_ipv4_addresses
+    #         | select('regex', '^172[.](10|11|13)[.]')
+    #         | list
+    #       }}
+
+    - name: Actualizar /etc/hosts para segmento 172.10.x.x
+      blockinfile:
+        path: "{{ filehosts }}"
+        marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS 172.10"
+        block: |
+          172.10.117.246 vxnbucfs
+          172.10.119.20 cpdnbumedia3-le
+          172.10.120.132 lvprpbckrescc01-cfs
+          {{ nbkchpiprbt | first }} {{ nbcltsfx }}
+      when: 
+        - nbkchpiprbt | length > 0
+        - nbkchpiprbt[0].startswith('172.10.')
+      register: hosts_update_172_10
+  become: true
+
+- name: Consolidar resultado de modificación en /etc/hosts
+  set_fact:
+    hosts_update: "{{ hosts_update_172_10 if hosts_update_172_10.changed }}"
