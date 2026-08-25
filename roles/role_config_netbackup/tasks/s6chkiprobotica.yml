@@ -17,13 +17,13 @@
       set_fact:
         run_playbook: |
           {% if nbkchpiprbt[0].startswith('172.10') %}
-          ['s7bckfilehosts','s8prgfilehosts','s10addnbhf17210']
+          ['s7bckfilehosts','s8prgfilehosts','s9addnbhf17210']
           {% elif nbkchpiprbt[0].startswith('172.11') %}
-          ['s7bckfilehosts','s8prgfilehosts','s10addnbhf17211']
+          ['s7bckfilehosts','s8prgfilehosts','s9addnbhf17211']
           {% elif nbkchpiprbt[0].startswith('172.13') %}
           ['s7bckfilehosts','s8prgfilehosts','s10addnbhf17213']
           {% elif nbkchpiprbt[0].startswith('150.') %}
-          ['s7bckfilehosts','s8prgfilehosts','s10addnbhf150xxx']
+          ['s7bckfilehosts','s8prgfilehosts','s9addnbhf150xxx']
           {% else %}
           ['s5msgnbcmfailed']
           {% endif %}

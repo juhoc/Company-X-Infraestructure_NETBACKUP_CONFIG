@@ -5,6 +5,9 @@ nbparamcm: grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="NetBackup") pr
 nbparamfv: tr -s ' ' '\n' | tail -1
 nbcommand: "/usr/openv/netbackup/bin/nbgetconfig"
 nbbin: "/usr/openv/netbackup/bin"
+nbfbpconf: "/usr/openv/netbackup/bp.conf"
+
+
 
 action: "{{ actions | replace(' ','_') }}"
 controllerhost: "http://192.168.49.2:30203/"
