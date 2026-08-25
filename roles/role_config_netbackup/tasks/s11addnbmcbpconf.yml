@@ -1,0 +1,19 @@
+---
+- block:
+    - name: Agregar Servidores CFS al inicio de /usr/openv/netbackup/bp.conf
+      ansible.builtin.blockinfile:
+        path: /usr/openv/netbackup/bp.conf
+        insertbefore: BOF
+        marker: "# {mark} ANSIBLE MANAGED CFS SERVERS"
+        block: |
+          SERVER = vxnbucfs
+          SERVER = cpdnbumedia3-le
+          SERVER = lvprpbckrescc01-cfs
+      register: bp_conf_update
+
+    - name: Configurar CLIENT_NAME en /usr/openv/netbackup/bp.conf
+      ansible.builtin.lineinfile:
+        path: /usr/openv/netbackup/bp.conf
+        regexp: '^CLIENT_NAME\s*='
+        line: "CLIENT_NAME = {{ client_nbu_name }}"
+        state: present
