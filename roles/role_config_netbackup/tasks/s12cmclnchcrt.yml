@@ -3,7 +3,7 @@
     - set_fact:
         run_playbook: |
           {% if applies_certs %}
-          "NetBackup es menor a 8.2"
+          "NetBackup es mayor a 8.2"
           {% else %}
           "NetBackup es menor a 8.2"
           {% endif %}
