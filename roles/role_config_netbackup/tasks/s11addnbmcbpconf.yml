@@ -15,6 +15,6 @@
       lineinfile:
         path: /usr/openv/netbackup/bp.conf
         regexp: '^CLIENT_NAME\s*='
-        line: "CLIENT_NAME = {{ client_nbu_name }}"
+        line: "CLIENT_NAME = {{ nbcltsfx }}"
         state: present
   become: true
