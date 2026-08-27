@@ -1,11 +1,12 @@
 ---
 - block:
-    - set_fact:
+    - name: Cuarta condición, validar archivo o comando versión NetBackup
+      set_fact:
         run_playbook: |
           {% if applies_certs %}
-          ['s13nbcommclnch','s14nbcommcrttknms','s15nbcommcrttkncl','s13nbcommclnch','s16nbcommself','s17nbcommpn','s18nbconfrepo']
+          ['s13nbcommclnch','s14nbcommcrttknms','s15nbcommcrttkncl','s13nbcommclnch','s16nbcommself','s17nbcommpn','s18chknbselfpn','s19nbconfrepo']
           {% else %}
-          ['s13nbcommclnch','s16nbcommself','s17nbcommpn','s18nbconfrepo']
+          ['s13nbcommclnch','s16nbcommself','s17nbcommpn','s18chknbselfpn','s19nbconfrepo']
           {% endif %}
     
     - name: Ejecutar tareas NetBackup
