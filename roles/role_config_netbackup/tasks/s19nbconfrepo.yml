@@ -29,5 +29,6 @@
     - copy:
         content: "{{ htmlrepotsf | join('\n') }}"
         dest: /tmp/reporte_consolidado_cfs.html
+  run_once: true
   delegate_to: lvdasb5gmx02.bvm.bluecare.kyndryl.net
         
