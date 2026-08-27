@@ -12,5 +12,5 @@
         src: templates/consolidated_cfs_report.html.j2
         dest: "/tmp/reporte_consolidado_cfs.html"
 #      delegate_to: lvdasb5gmx02
-      run_once: true
+      run_once: false
       become: no
