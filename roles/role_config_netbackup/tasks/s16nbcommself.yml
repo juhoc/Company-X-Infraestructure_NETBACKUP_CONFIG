@@ -1,0 +1,7 @@
+---
+- block:
+    - name: Validar resolución de nombre del cliente (bpclntcmd -self)
+      ansible.builtin.command: /usr/openv/netbackup/bin/bpclntcmd -self
+      register: bpclntcmd_self
+      changed_when: false
+      failed_when: false

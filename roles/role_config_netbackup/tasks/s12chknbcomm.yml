@@ -1,0 +1,15 @@
+---
+- block:
+    - set_fact:
+        run_playbook: |
+          {% if applies_certs %}
+          ['s13nbcommclnch','s14nbcommcrttknms','s15nbcommcrttkncl'.'s13nbcommclnch','s16nbcommself','s16nbcommself']
+          {% else %}
+          ['s13nbcommclnch','s16nbcommself','s16nbcommself']
+          {% endif %}
+    
+    - name: Ejecutar tareas NetBackup
+      include_tasks: "{{ asbpbact4 }}.yml"
+      loop: "{{ run_playbook | from_yaml }}"
+      loop_control:
+        loop_var: asbpbact4
