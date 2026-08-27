@@ -11,6 +11,12 @@
       template:
         src: templates/consolidated_cfs_report.html.j2
         dest: "/tmp/reporte_consolidado_cfs.html"
-      delegate_to: lvdasb5gmx02
+      delegate_to: localhost
+      run_once: true
+      become: false
+
+    - name: Leer Reporte Consolidado HTML para todos los nodos
+      shell: cat /tmp/reporte_consolidado_cfs.html
+      delegate_to: localhost
       run_once: true
       become: false
