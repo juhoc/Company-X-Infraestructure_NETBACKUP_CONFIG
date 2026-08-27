@@ -1,8 +1,0 @@
----
-- block:
-    - name: Generar reporte HTML de Certificación CFS
-      ansible.builtin.template:
-        src: templates/certificacion_cfs_report.html.j2
-        dest: "/tmp/certificacion_cfs_{{ inventory_hostname }}.html"
-#      delegate_to: localhost
-      become: false

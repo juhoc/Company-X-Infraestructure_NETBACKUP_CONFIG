@@ -1,0 +1,5 @@
+---
+- block:
+    - name: Evaluar estado global del nodo (OK o TBS)
+      ansible.builtin.set_fact:
+        cfs_status: "{{ 'OK' if (bpclntcmd_pn.rc == 0 and bpclntcmd_self.rc == 0) else 'TBS' }}"
