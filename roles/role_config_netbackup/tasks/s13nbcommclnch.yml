@@ -7,4 +7,4 @@
         chdir: "{{ nbbin }}"
       environment:
         PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/openv/netbackup/bin:{{ ansible_env.PATH }}"
-       changed_when: false
+      changed_when: false
