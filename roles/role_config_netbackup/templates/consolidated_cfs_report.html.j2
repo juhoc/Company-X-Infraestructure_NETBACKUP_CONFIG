@@ -96,9 +96,9 @@
             {% for host in ansible_play_hosts %}
             <tr>
                 <td><strong>{{ host }}</strong></td>
-                <td>{{ hostvars[host]['robotic_ip'] | default('N/A') }}</td>
-                <td>{{ hostvars[host]['nbu_version_detected'] | default('N/A') }}</td>
-                <td>{{ hostvars[host]['client_nbu_name'] | default('N/A') }}</td>
+                <td>{{ hostvars[host]['nbkchpiprbt'] | default('N/A') }}</td>
+                <td>{{ hostvars[host]['nbversion'] | default('N/A') }}</td>
+                <td>{{ hostvars[host]['nbcltsfx'] | default('N/A') }}</td>
                 <td>
                     {% if hostvars[host]['cfs_status'] == 'OK' %}
                         <span class="badge badge-ok">OK</span>
@@ -129,7 +129,7 @@
         
         <table class="data-table" style="width: 100%; margin: 0 0 10px 0;">
             <tr>
-                <td><strong>Versión NetBackup:</strong> {{ hostvars[host]['nbu_version_detected'] | default('N/A') }}</td>
+                <td><strong>Versión NetBackup:</strong> {{ hostvars[host]['nbversion'] | default('N/A') }}</td>
                 <td><strong>Aplica Certificado:</strong> {{ 'SI (>= 8.2)' if hostvars[host]['applies_certs'] else 'NO (< 8.2)' }}</td>
             </tr>
             <tr>
