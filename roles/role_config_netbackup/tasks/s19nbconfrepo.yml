@@ -4,13 +4,13 @@
       ansible.builtin.template:
         src: templates/certificacion_cfs_report.html.j2
         dest: "/tmp/certificacion_cfs_{{ inventory_hostname }}.html"
-      delegate_to: lvdasb5gmx02
+#      delegate_to: lvdasb5gmx02
       become: false
 
     - name: Generar Reporte Consolidado HTML para todos los nodos
       ansible.builtin.template:
         src: templates/consolidated_cfs_report.html.j2
         dest: "/tmp/reporte_consolidado_cfs.html"
-      delegate_to: lvdasb5gmx02
+#      delegate_to: lvdasb5gmx02
       run_once: true
       become: no
