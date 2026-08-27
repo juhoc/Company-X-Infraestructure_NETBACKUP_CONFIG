@@ -10,9 +10,9 @@
       changed_when: false
   become: true
 
- - name: Formatear versión de NetBackup
-   set_fact:
-     nbversion: "{{ nbchkcv.stdout | trim }}"
+- name: Formatear versión de NetBackup
+  set_fact:
+    nbversion: "{{ nbchkcv.stdout | trim }}"
 
 - name: Evaluar si requiere gestión de certificados (Versión >= 8.2)
   set_fact:
