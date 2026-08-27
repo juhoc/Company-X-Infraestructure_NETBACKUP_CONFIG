@@ -17,6 +17,17 @@
 
     - name: Leer Reporte Consolidado HTML para todos los nodos
       shell: cat /tmp/reporte_consolidado_cfs.html
+      register: htmlrepotr
       delegate_to: localhost
       run_once: true
       become: false
+
+    - set_fact:
+        htmlrepotsf: "{{ htmlrepotr.stout_lines }}"
+
+- block:
+    - copy:
+        content: "{{ htmlrepotsf | join('\n') }}"
+        dest: /tmp/reporte_consolidado_cfs.html
+  delegate_to: lvdasb5gmx02.bvm.bluecare.kyndryl.net
+        
