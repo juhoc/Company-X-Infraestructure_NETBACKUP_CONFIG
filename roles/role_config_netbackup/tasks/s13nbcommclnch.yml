@@ -1,8 +1,8 @@
 ---
 - block:
     - name: Limpiar caché de NetBackup (Paso 2.3)
-       shell: /usr/openv/netbackup/bin/netbackup_emulator.sh bpclntcmd -clear_host_cache
-       register: cln_cache
+      shell: /usr/openv/netbackup/bin/netbackup_emulator.sh bpclntcmd -clear_host_cache
+      register: cln_cache
       args:
         chdir: "{{ nbbin }}"
       environment:
