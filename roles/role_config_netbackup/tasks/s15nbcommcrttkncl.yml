@@ -1,6 +1,10 @@
 ---
 - block:
     - name: Asociar Certificado y Token al Cliente (Paso 2.5 - Versión >= 8.2)
-      ansible.builtin.command: /usr/openv/netbackup/bin/nbcertcmd -host {{ client_nbu_name }} -getCertificate -server vxnbucfs -token {{ cfs_token }}
+      shell: /usr/openv/netbackup/bin/netbackup_emulator.sh nbcertcmd -host {{ nbcltsfx }} -getCertificate -server vxnbucfs -token {{ cfs_token }}
       register: get_host_cert
+      args:
+        chdir: "{{ nbbin }}"
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/openv/netbackup/bin:{{ ansible_env.PATH }}"
       failed_when: false

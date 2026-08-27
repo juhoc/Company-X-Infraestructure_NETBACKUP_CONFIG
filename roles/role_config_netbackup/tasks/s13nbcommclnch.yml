@@ -1,6 +1,10 @@
 ---
 - block:
     - name: Limpiar caché de NetBackup (Paso 2.3)
-       ansible.builtin.command: /usr/openv/netbackup/bin/bpclntcmd -clear_host_cache
+       shell: /usr/openv/netbackup/bin/netbackup_emulator.sh bpclntcmd -clear_host_cache
        register: cln_cache
+      args:
+        chdir: "{{ nbbin }}"
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/openv/netbackup/bin:{{ ansible_env.PATH }}"
        changed_when: false

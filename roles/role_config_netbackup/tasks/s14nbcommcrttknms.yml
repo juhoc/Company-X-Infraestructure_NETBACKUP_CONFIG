@@ -1,6 +1,10 @@
 ---
 - block:
     - name: Añadir Certificado CA del Master Server (Paso 2.4 - Versión >= 8.2)
-      ansible.builtin.shell: printf 'y\n' | /usr/openv/netbackup/bin/nbcertcmd -getCaCertificate -server vxnbucfs
+      shell: printf 'y\n' | /usr/openv/netbackup/bin/netbackup_emulator.sh nbcertcmd -getCaCertificate -server vxnbucfs
       register: get_ca_cert
+      args:
+        chdir: "{{ nbbin }}"
+      environment:
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/openv/netbackup/bin:{{ ansible_env.PATH }}"
       failed_when: false
