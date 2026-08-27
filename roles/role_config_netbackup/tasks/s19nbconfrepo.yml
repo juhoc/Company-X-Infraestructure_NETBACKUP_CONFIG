@@ -23,7 +23,7 @@
       become: false
 
     - set_fact:
-        htmlrepotsf: "{{ htmlrepotr.stout_lines }}"
+        htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"
 
 - block:
     - copy:
