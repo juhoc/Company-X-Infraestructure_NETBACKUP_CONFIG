@@ -73,7 +73,7 @@
                 <span class="card-value">{{ total_ok.count }}</span>
             </td>
             <td class="card card-red" style="width: 33%;">
-                <span class="card-title">Total Equipos TBS (Errores)</span>
+                <span class="card-title">Total Equipos con (Errores)</span>
                 <span class="card-value">{{ total_tbs.count }}</span>
             </td>
         </tr>
@@ -96,7 +96,7 @@
             {% for host in ansible_play_hosts %}
             <tr>
                 <td><strong>{{ host }}</strong></td>
-                <td>{{ hostvars[host]['nbkchpiprbt'] | default('N/A') }}</td>
+                <td>{{ hostvars[host]['nbkchpiprbt'] | first | default('N/A') }}</td>
                 <td>{{ hostvars[host]['nbversion'] | default('N/A') }}</td>
                 <td>{{ hostvars[host]['nbcltsfx'] | default('N/A') }}</td>
                 <td>
