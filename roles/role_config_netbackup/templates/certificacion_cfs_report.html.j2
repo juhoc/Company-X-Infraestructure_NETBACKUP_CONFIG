@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1e293b; background-color: #f8fafc; margin: 0; padding: 20px; font-size: 13px; }
+        .container { max-width: 750px; margin: 0 auto; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .header { background-color: #0f172a; color: #ffffff; padding: 20px 24px; border-left: 6px solid #0284c7; }
+        .header h2 { margin: 0 0 4px 0; font-size: 18px; color: #ffffff; }
+        .header p { margin: 0; font-size: 11px; color: #94a3b8; }
+        .summary-cards { width: 100%; border-collapse: separate; border-spacing: 10px; padding: 6px; background-color: #f1f5f9; }
+        .card { background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; text-align: center; }
+        .card-title { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 600; }
+        .card-value { font-size: 12px; font-weight: 700; color: #0f172a; margin-top: 2px; }
+        .section-title { font-size: 14px; font-weight: 700; color: #0f172a; margin: 16px 20px 8px 20px; padding-bottom: 4px; border-bottom: 2px solid #e2e8f0; }
+        table.data-table { width: calc(100% - 40px); margin: 0 20px 12px 20px; border-collapse: collapse; font-size: 12px; }
+        table.data-table th { background-color: #334155; color: #ffffff; text-align: left; padding: 6px 10px; }
+        table.data-table td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
+        table.data-table tr:nth-child(even) td { background-color: #f8fafc; }
+        .badge { display: inline-block; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .badge-success { background-color: #dcfce7; color: #15803d; }
+        .badge-warning { background-color: #fef9c3; color: #a16207; }
+        .badge-danger  { background-color: #fee2e2; color: #b91c1c; }
+        .badge-info    { background-color: #e0f2fe; color: #0369a1; }
+        .code-box { background-color: #0f172a; color: #f8fafc; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 10px; white-space: pre-wrap; margin: 0 20px 16px 20px; }
+        .footer { background-color: #f8fafc; padding: 12px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Reporte de Certificación de Cliente en Master CFS</h2>
+        <p>Servidor: <strong>{{ inventory_hostname }}</strong> | Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}</p>
+    </div>
+
+    <table class="summary-cards">
+        <tr>
+            <td class="card" style="width: 25%;">
+                <div class="card-title">Cliente Configurado</div>
+                <div class="card-value">{{ nbcltsfx }}</div>
+            </td>
+            <td class="card" style="width: 25%;">
+                <div class="card-title">Versión NetBackup</div>
+                <div class="card-value">{{ nbversion }}</div>
+            </td>
+            <td class="card" style="width: 25%;">
+                <div class="card-title">Aplica Certificados</div>
+                <div class="card-value">{{ 'SI (>= 8.2)' if applies_certs else 'NO (< 8.2)' }}</div>
+            </td>
+            <td class="card" style="width: 25%;">
+                <div class="card-title">Estatus Global</div>
+                <div class="card-value">
+                    {% if bpclntcmd_pn.rc == 0 and bpclntcmd_self.rc == 0 %}
+                        <span class="badge badge-success">EXITOSO</span>
+                    {% else %}
+                        <span class="badge badge-danger">CON ERRORES</span>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-title">1. Modificaciones en Archivos de Configuración</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Archivo Modificado</th>
+                <th style="width: 45%;">Detalle del Cambio</th>
+                <th style="width: 20%;">Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>/etc/hosts</strong></td>
+                <td>Entradas asociadas al segmento robotico agregadas correctamente</td>
+                <td><span class="badge badge-success">{{ 'MODIFICADO' if hosts_update.changed else 'SIN CAMBIOS / OK' }}</span></td>
+            </tr>
+            <tr>
+                <td><strong>/usr/openv/netbackup/bp.conf</strong></td>
+                <td>Servidores CFS al inicio y CLIENT_NAME = {{ nbcltsfx }}</td>
+                <td><span class="badge badge-success">{{ 'MODIFICADO' if bp_conf_update.changed else 'SIN CAMBIOS / OK' }}</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">2. Gestión de Certificados NetBackup ($\ge 8.2$)</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Paso / Comando</th>
+                <th style="width: 45%;">Detalle / Estado</th>
+                <th style="width: 20%;">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Descarga CA (nbcertcmd -getCaCertificate)</strong></td>
+                <td>{{ 'Obtenido del server vxnbucfs' if applies_certs else 'Omitido por versión < 8.2' }}</td>
+                <td>
+                    {% if applies_certs %}
+                        <span class="badge {{ 'badge-success' if get_ca_cert.rc == 0 else 'badge-danger' }}">{{ 'EXITO' if get_ca_cert.rc == 0 else 'FALLO' }}</span>
+                    {% else %}
+                        <span class="badge badge-info">N/A</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Asociación de Token (nbcertcmd -getCertificate)</strong></td>
+                <td>{{ 'Certificado de host asignado con Token' if applies_certs else 'Omitido por versión < 8.2' }}</td>
+                <td>
+                    {% if applies_certs %}
+                        <span class="badge {{ 'badge-success' if get_host_cert.rc == 0 else 'badge-danger' }}">{{ 'EXITO' if get_host_cert.rc == 0 else 'FALLO' }}</span>
+                    {% else %}
+                        <span class="badge badge-info">N/A</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">3. Resultados de Validaciones NetBackup</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Comando de Validación</th>
+                <th style="width: 45%;">Salida del Comando</th>
+                <th style="width: 20%;">Evaluación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Resolución Local (bpclntcmd -self)</strong></td>
+                <td>{{ bpclntcmd_self.stdout_lines | last | default('N/A') }}</td>
+                <td><span class="badge {{ 'badge-success' if bpclntcmd_self.rc == 0 else 'badge-danger' }}">{{ 'OK' if bpclntcmd_self.rc == 0 else 'ERROR' }}</span></td>
+            </tr>
+            <tr>
+                <td><strong>Conexión a Master (bpclntcmd -pn)</strong></td>
+                <td>{{ bpclntcmd_pn.stdout_lines[1] | default('Sin respuesta') }}</td>
+                <td><span class="badge {{ 'badge-success' if bpclntcmd_pn.rc == 0 else 'badge-danger' }}">{{ 'OK' if bpclntcmd_pn.rc == 0 else 'ERROR' }}</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">4. Salida Detallada del Comando (bpclntcmd -pn)</div>
+    <div class="code-box">{{ bpclntcmd_pn.stdout | default('Sin datos de salida.') }}</div>
+
+    <div class="footer">
+        Reporte generado automáticamente por Ansible Automation Platform.
+    </div>
+</div>
+
+</body>
+</html>

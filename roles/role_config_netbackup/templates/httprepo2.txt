@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #e2e8f0; background-color: #1e293b; margin: 0; padding: 20px; font-size: 13px; }
+        .container { max-width: 950px; margin: 0 auto; background: #0f172a; border-radius: 8px; border: 1px solid #334155; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .header { background-color: #0284c7; color: #ffffff; padding: 20px 24px; }
+        .header h2 { margin: 0 0 4px 0; font-size: 20px; color: #ffffff; }
+        .header p { margin: 0; font-size: 11px; color: #e0f2fe; }
+        
+        /* Summary Cards */
+        .summary-cards { width: 100%; border-collapse: separate; border-spacing: 10px; padding: 10px 14px; background-color: #1e293b; }
+        .card { border-radius: 6px; padding: 12px; text-align: left; color: #ffffff; }
+        .card-blue { background-color: #2563eb; }
+        .card-green { background-color: #16a34a; }
+        .card-red { background-color: #dc2626; }
+        .card-title { font-size: 11px; text-transform: uppercase; font-weight: 600; opacity: 0.9; }
+        .card-value { font-size: 20px; font-weight: 800; margin-top: 4px; float: right; }
+
+        .section-title { font-size: 14px; font-weight: 700; color: #38bdf8; margin: 20px; padding-bottom: 6px; border-bottom: 2px solid #334155; }
+        
+        /* Data Tables */
+        table.data-table { width: calc(100% - 40px); margin: 0 20px 20px 20px; border-collapse: collapse; font-size: 12px; background-color: #1e293b; border-radius: 6px; overflow: hidden; }
+        table.data-table th { background-color: #334155; color: #f8fafc; text-align: left; padding: 10px; font-size: 11px; text-transform: uppercase; }
+        table.data-table td { padding: 9px 10px; border-bottom: 1px solid #334155; color: #cbd5e1; }
+        table.data-table tr:hover td { background-color: #334155; }
+        
+        /* Badges & Links */
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .badge-ok { background-color: #16a34a; color: #ffffff; }
+        .badge-tbs { background-color: #dc2626; color: #ffffff; }
+        .badge-info { background-color: #0284c7; color: #ffffff; }
+        .btn-link { color: #38bdf8; text-decoration: none; font-weight: 600; }
+        .btn-link:hover { text-decoration: underline; }
+        
+        /* Individual Host Detail Box */
+        .host-detail-box { background-color: #1e293b; margin: 0 20px 20px 20px; padding: 16px; border-radius: 6px; border: 1px solid #334155; }
+        .code-box { background-color: #0f172a; color: #38bdf8; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 11px; white-space: pre-wrap; margin-top: 8px; }
+        .top-link { float: right; font-size: 11px; color: #94a3b8; text-decoration: none; }
+        .footer { background-color: #1e293b; padding: 14px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #334155; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Detalle Equipos NetBackup - Certificación CFS</h2>
+        <p>Reporte Consolidado de Ejecución | Fecha: {{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }} {{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['time'] }}</p>
+    </div>
+
+    <!-- TABLERO DE TOTALES -->
+    {% set total_hosts = ansible_play_hosts | length %}
+    {% set total_ok = namespace(count=0) %}
+    {% set total_tbs = namespace(count=0) %}
+
+    {% for host in ansible_play_hosts %}
+        {% if hostvars[host]['cfs_status'] == 'OK' %}
+            {% set total_ok.count = total_ok.count + 1 %}
+        {% else %}
+            {% set total_tbs.count = total_tbs.count + 1 %}
+        {% endif %}
+    {% endfor %}
+
+    <table class="summary-cards">
+        <tr>
+            <td class="card card-blue" style="width: 33%;">
+                <span class="card-title">Total Equipos Procesados</span>
+                <span class="card-value">{{ total_hosts }}</span>
+            </td>
+            <td class="card card-green" style="width: 33%;">
+                <span class="card-title">Total Equipos OK</span>
+                <span class="card-value">{{ total_ok.count }}</span>
+            </td>
+            <td class="card card-red" style="width: 33%;">
+                <span class="card-title">Total Equipos TBS (Errores)</span>
+                <span class="card-value">{{ total_tbs.count }}</span>
+            </td>
+        </tr>
+    </table>
+
+    <!-- TABLA GENERAL DE ESTADOS -->
+    <div class="section-title">Resumen de Estado por Servidor</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Hostname</th>
+                <th>IP Robótica / Datos</th>
+                <th>Versión NBU</th>
+                <th>Nombre Cliente</th>
+                <th>Status</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for host in ansible_play_hosts %}
+            <tr>
+                <td><strong>{{ host }}</strong></td>
+                <td>{{ hostvars[host]['robotic_ip'] | default('N/A') }}</td>
+                <td>{{ hostvars[host]['nbu_version_detected'] | default('N/A') }}</td>
+                <td>{{ hostvars[host]['client_nbu_name'] | default('N/A') }}</td>
+                <td>
+                    {% if hostvars[host]['cfs_status'] == 'OK' %}
+                        <span class="badge badge-ok">OK</span>
+                    {% else %}
+                        <span class="badge badge-tbs">TBS</span>
+                    {% endif %}
+                </td>
+                <td><a href="#host-{{ host }}" class="btn-link">Ver Detalle &rarr;</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- SECCIONES DE DETALLE INDIVIDUAL POR HOST -->
+    <div class="section-title">Detalle Técnico Individual de Configuración</div>
+    
+    {% for host in ansible_play_hosts %}
+    <div class="host-detail-box" id="host-{{ host }}">
+        <a href="#" class="top-link">&uarr; Volver al Resumen</a>
+        <h3 style="margin: 0 0 10px 0; color: #f8fafc;">
+            {{ host }} 
+            {% if hostvars[host]['cfs_status'] == 'OK' %}
+                <span class="badge badge-ok">OK</span>
+            {% else %}
+                <span class="badge badge-tbs">TBS</span>
+            {% endif %}
+        </h3>
+        
+        <table class="data-table" style="width: 100%; margin: 0 0 10px 0;">
+            <tr>
+                <td><strong>Versión NetBackup:</strong> {{ hostvars[host]['nbu_version_detected'] | default('N/A') }}</td>
+                <td><strong>Aplica Certificado:</strong> {{ 'SI (>= 8.2)' if hostvars[host]['applies_certs'] else 'NO (< 8.2)' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Edición /etc/hosts:</strong> {{ 'EXITOSO' if hostvars[host]['hosts_update']['changed'] | default(false) else 'SIN CAMBIOS / OK' }}</td>
+                <td><strong>Edición bp.conf:</strong> {{ 'EXITOSO' if hostvars[host]['bp_conf_update']['changed'] | default(false) else 'SIN CAMBIOS / OK' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Resolución (bpclntcmd -self):</strong> {{ 'OK' if hostvars[host]['bpclntcmd_self']['rc'] | default(1) == 0 else 'FALLO' }}</td>
+                <td><strong>Conexión Master (bpclntcmd -pn):</strong> {{ 'OK' if hostvars[host]['bpclntcmd_pn']['rc'] | default(1) == 0 else 'FALLO' }}</td>
+            </tr>
+        </table>
+
+        <div style="font-size: 11px; color: #94a3b8;"><strong>Salida Validación Conexión Master (bpclntcmd -pn):</strong></div>
+        <div class="code-box">{{ hostvars[host]['bpclntcmd_pn']['stdout'] | default('Sin respuesta del servidor Master.') }}</div>
+    </div>
+    {% endfor %}
+
+    <div class="footer">
+        Reporte consolidado generado automáticamente por Ansible Automation Platform.
+    </div>
+</div>
+
+</body>
+</html>
