@@ -1,0 +1,70 @@
+---
+- block:
+    - name: Actualizar /etc/hosts para segmento 172.10.x.x
+      blockinfile:
+        path: "{{ filehosts }}"
+        marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS 172.10"
+        block: |
+          172.10.117.246 vxnbucfs
+          172.10.119.20 cpdnbumedia3-le
+          172.10.120.245 cpdnbumedia6-le
+          172.10.120.132 lvprpbckrescc01-cfs
+          {{ nbkchpiprbt | first }} {{ nbcltsfx }}
+      when: 
+        - nbkchpiprbt | length > 0
+        - nbkchpiprbt[0].startswith('172.10.')
+      register: hosts_update_17210
+
+    - name: Actualizar /etc/hosts para segmento 172.11.x.x
+      blockinfile:
+        path: "{{ filehosts }}"
+        marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS 172.11"
+        block: |
+          172.11.110.84 vxnbucfs
+          172.11.110.83 cpdnbumedia3-le
+          172.11.110.87 cpdnbumedia6-le
+          172.10.120.132 lvprpbckrescc01-cfs
+          {{ nbkchpiprbt | first }} {{ nbcltsfx }}
+      when: 
+        - nbkchpiprbt | length > 0
+        - nbkchpiprbt[0].startswith('172.11.')
+      register: hosts_update_17211
+
+    - name: Actualizar /etc/hosts para segmento 172.13.x.x
+      blockinfile:
+        path: "{{ filehosts }}"
+        marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS 172.13"
+        block: |
+          172.13.103.137 vxnbucfs
+          172.13.103.136 cpdnbumedia3-le
+          172.13.103.176 cpdnbumedia6-le
+          172.10.120.132 lvprpbckrescc01-cfs
+          {{ nbkchpiprbt | first }} {{ nbcltsfx }}
+      when: 
+        - nbkchpiprbt | length > 0
+        - nbkchpiprbt[0].startswith('172.13.')
+      register: hosts_update_17213
+
+    - name: Actualizar /etc/hosts para equipos sin IP Robótica (150.100.x.x)
+      blockinfile:
+        path: "{{ filehosts }}"
+        marker: "# {mark} ANSIBLE MANAGED NETBACKUP CFS DATA IP"
+        block: |
+          150.100.246.180 vxnbucfs
+          150.100.230.208 cpdnbumedia3-le
+          150.80.8.37     lvprpbckrescc01-cfs
+          {{ ansible_default_ipv4.address }} {{ ansible_nodename }}
+      when: nbkchpiprbt | length == 0
+      register: hosts_update_150xxx
+
+    - name: Consolidar estado de hosts_update
+      set_fact:
+        hosts_update:
+          changed: >-
+            {{
+              (hosts_update_17210.changed | default(false)) or
+              (hosts_update_17211.changed | default(false)) or
+              (hosts_update_17213.changed | default(false)) or
+              (hosts_update_150xxx.changed | default(false))
+            }}
+  become: true
