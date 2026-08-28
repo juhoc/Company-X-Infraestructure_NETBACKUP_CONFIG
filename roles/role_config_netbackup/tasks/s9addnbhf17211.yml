@@ -27,4 +27,5 @@
 
 - name: Consolidar resultado de modificación en /etc/hosts
   set_fact:
-    hosts_update: "{{ hosts_update_172_11 }}"
+    hosts_update:
+      changed: "{{ hosts_update_172_11.changed | default(false) }}"
