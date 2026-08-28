@@ -96,7 +96,7 @@
             {% for host in ansible_play_hosts %}
             <tr>
                 <td><strong>{{ host }}</strong></td>
-                <td>{{ hostvars[host]['nbkchpiprbt'] | first | default('N/A') }}</td>
+                <td>{{ (hostvars[host]['nbkchpiprbt'] | default([])) | first | default('N/A', true) if (hostvars[host]['nbkchpiprbt'] | default([]) | length > 0) else hostvars[host]['ansible_default_ipv4']['address'] | default('N/A') }}</td>
                 <td>{{ hostvars[host]['nbversion'] | default('N/A') }}</td>
                 <td>{{ hostvars[host]['nbcltsfx'] | default('N/A') }}</td>
                 <td>

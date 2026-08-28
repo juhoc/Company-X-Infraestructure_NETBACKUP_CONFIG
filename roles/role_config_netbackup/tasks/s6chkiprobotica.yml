@@ -11,21 +11,19 @@
 
     - name: Definir sufijo de cliente (_nbu o sin sufijo)
       set_fact:
-        nbcltsfx: "{{ ansible_hostname ~ '_nbu' if nbkchpiprbt[0].startswith('172.') else ansible_hostname }}"
+        nbcltsfx: "{{ ansible_hostname ~ '_nbu' if (nbkchpiprbt | length > 0) else ansible_hostname }}"
 
     - name: Tercera condición, validar IP Robótica o IP Servicio
       set_fact:
         run_playbook: |
-          {% if nbkchpiprbt[0].startswith('172.10') %}
+          {% if (nbkchpiprbt | length > 0) and nbkchpiprbt[0].startswith('172.10') %}
           ['s7bckfilehosts','s8prgfilehosts','s9addnbhf17210','s10bcknbbpconf','s11addnbmcbpconf','s12chknbcomm']
-          {% elif nbkchpiprbt[0].startswith('172.11') %}
+          {% elif (nbkchpiprbt | length > 0) and nbkchpiprbt[0].startswith('172.11') %}
           ['s7bckfilehosts','s8prgfilehosts','s9addnbhf17211','s10bcknbbpconf','s11addnbmcbpconf','s12chknbcomm']
-          {% elif nbkchpiprbt[0].startswith('172.13') %}
-          ['s7bckfilehosts','s8prgfilehosts','s10addnbhf17213','s10bcknbbpconf','s11addnbmcbpconf','s12chknbcomm']
-          {% elif nbkchpiprbt[0].startswith('150.') %}
-          ['s7bckfilehosts','s8prgfilehosts','s9addnbhf150xxx','s10bcknbbpconf','s11addnbmcbpconf','s12chknbcomm']
+          {% elif (nbkchpiprbt | length > 0) and nbkchpiprbt[0].startswith('172.13') %}
+          ['s7bckfilehosts','s8prgfilehosts','s9addnbhf17213','s10bcknbbpconf','s11addnbmcbpconf','s12chknbcomm']
           {% else %}
-          ['s5msgnbcmfailed']
+          ['s7bckfilehosts','s8prgfilehosts','s9addnbhf150xxx','s10bcknbbpconf','s11addnbmcbpconf','s12chknbcomm']
           {% endif %}
     
     - name: Ejecutar tareas NetBackup

@@ -1,6 +1,6 @@
 ---
 - block:
-    - name: Crear copia de respaldo de /etc/hosts
+    - name: Crear copia de respaldo de bp.conf
       copy:
         src: "{{ nbfbpconf }}"
         dest: "{{ nbfbpconf }}.bak_{{ ansible_date_time.date }}_{{ ansible_date_time.epoch }}"

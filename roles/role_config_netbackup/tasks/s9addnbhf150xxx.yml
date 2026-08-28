@@ -17,10 +17,8 @@
           150.100.246.180 vxnbucfs
           150.100.230.208 cpdnbumedia3-le
           150.80.8.37     lvprpbckrescc01-cfs
-          {{ nbkchpiprbt | first }} {{ nbcltsfx }}
-      when: 
-        - nbkchpiprbt | length < 0
-        - not nbkchpiprbt[0].startswith('172.')
+          {{ ansible_default_ipv4.address }} {{ nbcltsfx }}
+      when: nbkchpiprbt | length == 0
       register: hosts_update_150_xxx
   become: true
 
