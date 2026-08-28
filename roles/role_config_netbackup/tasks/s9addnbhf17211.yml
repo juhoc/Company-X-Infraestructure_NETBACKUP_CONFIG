@@ -16,6 +16,7 @@
         block: |
           172.11.110.84 vxnbucfs
           172.11.110.83 cpdnbumedia3-le
+          172.11.110.87 cpdnbumedia6-le
           172.10.120.132 lvprpbckrescc01-cfs
           {{ nbkchpiprbt | first }} {{ nbcltsfx }}
       when: 
