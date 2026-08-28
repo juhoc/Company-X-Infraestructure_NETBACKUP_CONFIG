@@ -8,6 +8,7 @@
         block: |
           SERVER = vxnbucfs
           SERVER = cpdnbumedia3-le
+          SERVER = cpdnbumedia6-le
           SERVER = lvprpbckrescc01-cfs
       register: bp_conf_update
 
