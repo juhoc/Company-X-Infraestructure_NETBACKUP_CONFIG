@@ -24,4 +24,4 @@
 
 - name: Consolidar resultado de modificación en /etc/hosts
   ansible.builtin.set_fact:
-    hosts_update: "{{ hosts_update_150_xxx if hosts_update_150_xxx.changed }}"
+    hosts_update: "{{ hosts_update_150_xxx }}"
