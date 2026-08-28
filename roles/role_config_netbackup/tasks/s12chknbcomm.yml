@@ -4,9 +4,9 @@
       set_fact:
         run_playbook: |
           {% if applies_certs %}
-          ['s13nbcommclnch','s14nbcommcrttknms','s15nbcommcrttkncl','s13nbcommclnch','s16nbcommself','s17nbcommpn','s18chknbselfpn','s19nbconfrepo']
+          ['s13nbcommclnch','s14nbcommcrttknms','s15nbcommcrttkncl','s13nbcommclnch','s16nbcommself','s17nbcommpn','s18chknbselfpn']
           {% else %}
-          ['s13nbcommclnch','s16nbcommself','s17nbcommpn','s18chknbselfpn','s19nbconfrepo']
+          ['s13nbcommclnch','s16nbcommself','s17nbcommpn','s18chknbselfpn']
           {% endif %}
     
     - name: Ejecutar tareas NetBackup

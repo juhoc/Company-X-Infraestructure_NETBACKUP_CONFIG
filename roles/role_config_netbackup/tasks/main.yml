@@ -24,3 +24,7 @@
       loop: "{{ run_playbook }}"
       loop_control:
         loop_var: asbpbact
+
+    - name: Generar Reporte Final
+      include_tasks: s19nbconfrepo.yml
+      when: action == 'Configurar_NetBackup'
