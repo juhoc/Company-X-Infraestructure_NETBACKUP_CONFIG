@@ -133,7 +133,10 @@
                 <td><strong>Aplica Certificado:</strong> {{ 'SI (>= 8.2)' if hostvars[host]['applies_certs'] else 'NO (< 8.2)' }}</td>
             </tr>
             <tr>
-                <td><strong>Edición /etc/hosts:</strong> {{ 'EXITOSO' if hostvars[host]['hosts_update']['changed'] | default(false) else 'SIN CAMBIOS / OK' }}</td>
+                <td>
+                    <strong>Edición /etc/hosts:</strong> {{ 'EXITOSO' if (hostvars[host]['hosts_update'] | default({}))['changed'] | default(false) else 'SIN CAMBIOS / OK' }}
+                    <br><span style="font-size: 9px; color: #94a3b8;">[Debug: {{ hostvars[host]['hosts_update'] | default('UNDEFINED') | to_json }}]</span>
+                </td>
                 <td><strong>Edición bp.conf:</strong> {{ 'EXITOSO' if hostvars[host]['bp_conf_update']['changed'] | default(false) else 'SIN CAMBIOS / OK' }}</td>
             </tr>
             <tr>
