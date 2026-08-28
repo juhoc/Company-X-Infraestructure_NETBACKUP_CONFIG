@@ -19,10 +19,5 @@
           150.80.8.37     lvprpbckrescc01-cfs
           {{ ansible_default_ipv4.address }} {{ ansible_nodename }}
       when: nbkchpiprbt | length == 0
-      register: hosts_update_150_xxx
+      register: hosts_update
   become: true
-
-- name: Consolidar resultado de modificación en /etc/hosts
-  ansible.builtin.set_fact:
-    hosts_update:
-      changed: "{{ hosts_update_150_xxx.changed | default(false) | bool }}"

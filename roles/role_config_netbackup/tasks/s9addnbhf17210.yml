@@ -22,10 +22,5 @@
       when: 
         - nbkchpiprbt | length > 0
         - nbkchpiprbt[0].startswith('172.10.')
-      register: hosts_update_172_10
+      register: hosts_update
   become: true
-
-- name: Consolidar resultado de modificación en /etc/hosts
-  set_fact:
-    hosts_update:
-      changed: "{{ hosts_update_172_10.changed | default(false) | bool }}"
