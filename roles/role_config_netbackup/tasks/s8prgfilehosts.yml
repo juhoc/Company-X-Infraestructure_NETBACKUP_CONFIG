@@ -10,6 +10,6 @@
     - name: Eliminar cualquier linea que contenga los hostnames de NetBackup
       lineinfile:
         path: "{{ filehosts }}"
-        regexp: '^.*?\b(vxnbucfs|cpdnbumedia3-le|cpdnbumedia6-le|lvprpbckrescc01-cfs|{{ ansible_nodename }}_)\b.*$'
+        regexp: '^.*?\b(vxnbucfs|cpdnbumedia3-le|cpdnbumedia6-le|lvprpbckrescc01-cfs|{{ ansible_nodename }}_nbu)\b.*$'
         state: absent
   become: true
