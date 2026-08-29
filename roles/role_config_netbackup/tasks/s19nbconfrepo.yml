@@ -16,7 +16,7 @@
       become: false
 
     - name: Enviar correo único con el Reporte Ejecutivo Consolidado
-      mail:
+      community.general.mail:
         host: "{{ smtp_server }}"
         port: "{{ smtp_port }}"
         from: "{{ email_sender }}"
