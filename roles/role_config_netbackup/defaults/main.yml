@@ -8,7 +8,12 @@ nbcommand: "/usr/openv/netbackup/bin/nbgetconfig"
 nbbin: "/usr/openv/netbackup/bin"
 nbfbpconf: "/usr/openv/netbackup/bp.conf"
 
-
+smtp_server: "192.168.0.245"
+smtp_port: 25
+email_sender: "admin@company-x.ldn"
+email_password: "MiPasswordSeguro123"
+email_recipients:
+  - "usuario1@company-x.ldn"
 
 action: "{{ actions | replace(' ','_') }}"
 controllerhost: "http://192.168.49.2:30203/"

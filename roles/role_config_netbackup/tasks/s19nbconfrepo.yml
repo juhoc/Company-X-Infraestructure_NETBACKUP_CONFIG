@@ -15,6 +15,20 @@
       run_once: true
       become: false
 
+    - name: Enviar correo único con el Reporte Ejecutivo Consolidado
+      mail:
+        host: "{{ smtp_server }}"
+        port: "{{ smtp_port }}"
+        from: "{{ email_sender }}"
+        to: "{{ email_recipients }}"
+        subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
+        body: "Este es un correo de prueba"
+        subtype: html
+      delegate_to: localhost
+      run_once: true
+      become: no
+
+
     - name: Leer Reporte Consolidado HTML para todos los nodos
       shell: cat /tmp/reporte_consolidado_cfs.html
       register: htmlrepotr
