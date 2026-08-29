@@ -1,6 +1,6 @@
 ---
 - block:
-    - name: Name for debug module.
-      debug:
-        msg: "No existe archivo version ni comando nbgetconfig"
-      failed_when: nbu_comm.stat.exists
+    - name: Registrar error de prerrequisitos NetBackup (Comando y Version)
+      set_fact:
+        cfs_status: 'ERROR'
+        cfs_error_msg: "No existe archivo version ni comando nbgetconfig"

@@ -1,0 +1,22 @@
+---
+- block:
+    - name: Preflight Check - Verificar existencia de archivos criticos
+      stat:
+        path: "{{ item }}"
+      loop:
+        - /usr/openv/netbackup/bp.conf
+        - /usr/openv/netbackup/bin/bpclntcmd
+        - /usr/openv/netbackup/bin/nbcertcmd
+      register: preflight_stats
+
+    - name: Evaluar resultados de preflight
+      set_fact:
+        missing_files: >-
+          {{ preflight_stats.results | rejectattr('stat.exists') | map(attribute='item') | list }}
+
+    - name: Asignar cfs_status si hay error en preflight
+      set_fact:
+        cfs_status: 'ERROR'
+        cfs_error_msg: "Falta: {{ missing_files | join(', ') }}"
+      when: missing_files | length > 0
+  become: true

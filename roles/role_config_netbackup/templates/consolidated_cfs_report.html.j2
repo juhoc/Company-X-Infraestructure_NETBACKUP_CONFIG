@@ -55,7 +55,11 @@
     {% set total_tbs = namespace(count=0) %}
 
     {% for host in ansible_play_hosts %}
-        {% if hostvars[host]['cfs_status'] == 'OK' %}
+        {% if hostvars[host].get('cfs_status') == 'ERROR' %}
+        <span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);">
+            ERROR PRE-FLIGHT
+        </span>
+        {% elif hostvars[host]['cfs_status'] == 'OK' %}
             {% set total_ok.count = total_ok.count + 1 %}
         {% else %}
             {% set total_tbs.count = total_tbs.count + 1 %}
@@ -132,13 +136,20 @@
                 <td><strong>Versión NetBackup:</strong> {{ hostvars[host]['nbversion'] | default('N/A') }}</td>
                 <td><strong>Aplica Certificado:</strong> {{ 'SI (>= 8.2)' if hostvars[host]['applies_certs'] else 'NO (< 8.2)' }}</td>
             </tr>
-            <tr>
+            <tr style="background: rgba(30, 41, 59, 0.5);">
+                {% if hostvars[host].get('cfs_status') == 'ERROR' %}
+                <td colspan="2" style="text-align: center; color: #fca5a5; padding: 20px;">
+                    <strong>ERROR DE PRERREQUISITOS:</strong> {{ hostvars[host].get('cfs_error_msg', 'Fallo desconocido') }}<br>
+                    <span style="font-size: 12px; opacity: 0.8;">El equipo no cumple con los archivos o comandos necesarios. Se omitió la configuración.</span>
+                </td>
+                {% else %}
                 <td>
                     <strong>Edición /etc/hosts:</strong> {{ 'EXITOSO' if (hostvars[host]['hosts_update'] | default({}))['changed'] | default(false) else 'SIN CAMBIOS / OK' }}
                     <br><span style="font-size: 9px; color: #94a3b8;">[Debug: {{ hostvars[host]['hosts_update'] | default('UNDEFINED') | to_json }}]</span>
                     <br><span style="font-size: 9px; color: #94a3b8;">[Route: nbkchpiprbt={{ hostvars[host]['nbkchpiprbt'] | default('N/A') }}, run={{ hostvars[host]['run_playbook'] | default('N/A') | replace('\n', '') }}]</span>
                 </td>
                 <td><strong>Edición bp.conf:</strong> {{ 'EXITOSO' if hostvars[host]['bp_conf_update']['changed'] | default(false) else 'SIN CAMBIOS / OK' }}</td>
+                {% endif %}
             </tr>
             <tr>
                 <td><strong>Resolución (bpclntcmd -self):</strong> {{ 'OK' if hostvars[host]['bpclntcmd_self']['rc'] | default(1) == 0 else 'FALLO' }}</td>

@@ -14,3 +14,4 @@
       loop: "{{ run_playbook | from_yaml }}"
       loop_control:
         loop_var: asbpbact4
+      when: hostvars[inventory_hostname].get('cfs_status', 'OK') != 'ERROR'
