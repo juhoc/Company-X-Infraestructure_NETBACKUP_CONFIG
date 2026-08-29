@@ -53,7 +53,7 @@
           150.100.246.180 vxnbucfs
           150.100.230.208 cpdnbumedia3-le
           150.80.8.37     lvprpbckrescc01-cfs
-          {{ ansible_default_ipv4.address }} {{ ansible_nodename }}
+          {{ ansible_default_ipv4.get('address') | default(ansible_all_ipv4_addresses | first, true) }} {{ ansible_nodename }}
       when: nbkchpiprbt | length == 0
       register: hosts_update_150xxx
 
