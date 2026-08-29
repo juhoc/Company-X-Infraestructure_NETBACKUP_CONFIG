@@ -55,11 +55,7 @@
     {% set total_tbs = namespace(count=0) %}
 
     {% for host in ansible_play_hosts %}
-        {% if hostvars[host].get('cfs_status') == 'ERROR' %}
-        <span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);">
-            ERROR PRE-FLIGHT
-        </span>
-        {% elif hostvars[host]['cfs_status'] == 'OK' %}
+        {% if hostvars[host].get('cfs_status') == 'OK' %}
             {% set total_ok.count = total_ok.count + 1 %}
         {% else %}
             {% set total_tbs.count = total_tbs.count + 1 %}
@@ -126,8 +122,10 @@
         <a href="#" class="top-link">&uarr; Volver al Resumen</a>
         <h3 style="margin: 0 0 10px 0; color: #f8fafc;">
             {{ host }} 
-            {% if hostvars[host]['cfs_status'] == 'OK' %}
+            {% if hostvars[host].get('cfs_status') == 'OK' %}
                 <span class="badge badge-ok">OK</span>
+            {% elif hostvars[host].get('cfs_status') == 'ERROR' %}
+                <span class="badge badge-tbs">ERROR</span>
             {% else %}
                 <span class="badge badge-tbs">TBS</span>
             {% endif %}
