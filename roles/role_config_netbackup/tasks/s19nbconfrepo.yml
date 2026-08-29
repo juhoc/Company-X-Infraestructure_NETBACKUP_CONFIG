@@ -22,7 +22,7 @@
         from: "{{ email_sender }}"
         to: "{{ email_recipients }}"
         subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
-        body: "Este es un correo de prueba"
+        body: "{{ lookup('file', '/tmp/reporte_consolidado_cfs.html') }}"
         subtype: html
       delegate_to: localhost
       run_once: true
