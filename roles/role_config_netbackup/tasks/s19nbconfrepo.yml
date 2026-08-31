@@ -13,7 +13,7 @@
         mode: " 0755"
         owner: "bvmuxat2"
         group: "bvmuxat2"
-        state: "dorectory"
+        state: "directory"
 
     - name: Generar Reporte Consolidado HTML para todos los nodos
       template:
