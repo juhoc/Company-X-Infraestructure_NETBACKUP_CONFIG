@@ -30,8 +30,7 @@
         from: "{{ email_sender }}"
         to: "{{ email_recipients }}"
         subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
-        body: "Correo de Prueba"
-#        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html') }}"
+        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html') }}"
         subtype: html
       # delegate_to: localhost
       # run_once: true
