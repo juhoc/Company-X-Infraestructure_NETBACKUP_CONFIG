@@ -43,8 +43,8 @@
   run_once: true
   become: false
 
-    - set_fact:
-        htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"
+- set_fact:
+    htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"
 
 - block:
     - copy:
