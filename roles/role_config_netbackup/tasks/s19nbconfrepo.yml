@@ -41,7 +41,7 @@
       register: htmlrepotr
   delegate_to: "{{ srv_delegate }}"
   run_once: true
-  become: false
+  become: true
 
 - set_fact:
     htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"
