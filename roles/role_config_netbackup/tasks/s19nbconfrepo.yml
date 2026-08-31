@@ -7,13 +7,21 @@
     #   delegate_to: localhost
     #   become: false
 
+    - name: Crear directorio de reporte_consolidado NetBackup CFS
+      file:
+        path: "{{ rutareporte }}"
+        mode: " 0755"
+        owner: "bvmuxat2"
+        group: "bvmuxat2"
+        state: "dorectory"
+
     - name: Generar Reporte Consolidado HTML para todos los nodos
       template:
         src: templates/consolidated_cfs_report.html.j2
-        dest: "/tmp/reporte_consolidado_cfs.html"
-      delegate_to: localhost
-      run_once: true
-      become: false
+        dest: "{{ rutareporte }}/reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html"
+      # delegate_to: localhost
+      # run_once: true
+      # become: false
 
     - name: Enviar correo único con el Reporte Ejecutivo Consolidado
       community.general.mail:
@@ -24,17 +32,16 @@
         subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
         body: "{{ lookup('file', '/tmp/reporte_consolidado_cfs.html') }}"
         subtype: html
-      delegate_to: localhost
-      run_once: true
-      become: no
-
+      # delegate_to: localhost
+      # run_once: true
+      # become: no
 
     - name: Leer Reporte Consolidado HTML para todos los nodos
       shell: cat /tmp/reporte_consolidado_cfs.html
       register: htmlrepotr
-      delegate_to: localhost
-      run_once: true
-      become: false
+  delegate_to: "{{ srv_delegate }}"
+  run_once: true
+  become: false
 
     - set_fact:
         htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"

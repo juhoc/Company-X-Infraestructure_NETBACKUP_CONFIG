@@ -1,6 +1,9 @@
 ---
 # sudo /usr/openv/netbackup/bin/nbgetconfig | grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="\"NetBackup\"") print $(i+2)}'#
+fsasb: "/var/opt/ansible"
+rutareporte: "{{ fsasb }}/netbackup/{{ tower_job_id }}/"
 filehosts: "/etc/hosts"
+srv_delegate: "lvdasb5gmx02.bvm.bluecare.kyndryl.net"
 nbfile: "/usr/openv/netbackup/bin/version"
 nbparamcm: grep -i versioninfo | awk '{for(i=1;i<=NF;i++) if($i=="NetBackup") print $(i+1)}'
 nbparamfv: tr -s ' ' '\n' | tail -1
