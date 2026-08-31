@@ -30,14 +30,14 @@
         from: "{{ email_sender }}"
         to: "{{ email_recipients }}"
         subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
-        body: "{{ lookup('file', '/tmp/reporte_consolidado_cfs.html') }}"
+        body: "{{ lookup('file', '{{ rutareporte }}/reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html') }}"
         subtype: html
       # delegate_to: localhost
       # run_once: true
-      # become: no
+      # become: true
 
     - name: Leer Reporte Consolidado HTML para todos los nodos
-      shell: cat /tmp/reporte_consolidado_cfs.html
+      shell: "cat {{ rutareporte }}/reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html"
       register: htmlrepotr
   delegate_to: "{{ srv_delegate }}"
   run_once: true
@@ -49,7 +49,7 @@
 - block:
     - copy:
         content: "{{ htmlrepotsf | join('\n') }}"
-        dest: /tmp/reporte_consolidado_cfs.html
+        dest: "{{ rutareporte }}/reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html"
   run_once: true
-  delegate_to: lvdasb5gmx02.bvm.bluecare.kyndryl.net
+  delegate_to: "{{ srv_delegate }}"
         
