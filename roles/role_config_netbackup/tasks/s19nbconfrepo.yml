@@ -18,7 +18,7 @@
     - name: Generar Reporte Consolidado HTML para todos los nodos
       template:
         src: templates/consolidated_cfs_report.html.j2
-        dest: "{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html"
+        dest: "{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html"
       # delegate_to: localhost
       # run_once: true
       # become: false
@@ -29,15 +29,15 @@
         port: "{{ smtp_port }}"
         from: "{{ email_sender }}"
         to: "{{ email_recipients }}"
-        subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
-        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html') }}"
+        subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time.date']['date'] }})"
+        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html') }}"
         subtype: html
       # delegate_to: localhost
       # run_once: true
       # become: true
 
     - name: Leer Reporte Consolidado HTML para todos los nodos
-      shell: "cat {{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html"
+      shell: "cat {{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html"
       register: htmlrepotr
   delegate_to: "{{ srv_delegate }}"
   run_once: true
@@ -49,7 +49,7 @@
 - block:
     - copy:
         content: "{{ htmlrepotsf | join('\n') }}"
-        dest: "{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time }}.html"
+        dest: "{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html"
   run_once: true
   delegate_to: "{{ srv_delegate }}"
         
