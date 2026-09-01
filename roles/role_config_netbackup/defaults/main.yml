@@ -16,7 +16,7 @@ smtp_port: 25
 email_sender: "admin@company-x.ldn"
 # email_password: "MiPasswordSeguro123"
 email_recipients:
-  - "usuario1@company-x.ldn"
+  - "{{ email_cc }}"
 
 action: "{{ actions | replace(' ','_') }}"
 # controllerhost: "http://192.168.49.2:30203/"
