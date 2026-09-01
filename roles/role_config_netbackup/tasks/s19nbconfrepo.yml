@@ -36,7 +36,7 @@
         port: "{{ smtp_port }}"
         from: "{{ email_sender }}"
         to: "{{ email_recipients }}"
-        cc: "{{ email_copy }}"
+        cc: "{{ email_copy if email_copy | length > 0 else omit }}"
         subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
         body: "{{ htmlrepotsf | join('\n') }}"
 #        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html') }}"

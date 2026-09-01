@@ -17,7 +17,7 @@ smtp_port: 25
 email_sender: "admin@company-x.ldn"
 # email_password: "MiPasswordSeguro123"
 email_recipients: "add usuario1@company-x.ldn"
-email_copy: "{{ emailcc.split('\n') }}"
+email_copy: "{{ (emailcc | default('')).splitlines() | map('trim') | reject('equalto', '') | list }}"
 
 action: "{{ actions | replace(' ','_') }}"
 # controllerhost: "http://192.168.49.2:30203/"
