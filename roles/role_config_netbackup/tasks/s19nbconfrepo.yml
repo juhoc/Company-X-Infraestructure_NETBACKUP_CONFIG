@@ -23,6 +23,13 @@
       # run_once: true
       # become: false
 
+    - name: Leer Reporte Consolidado HTML para todos los nodos
+      shell: "cat {{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html"
+      register: htmlrepotr
+
+    - set_fact:
+        htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"
+
     - name: Enviar correo único con el Reporte Ejecutivo Consolidado
       community.general.mail:
         host: "{{ smtp_server }}"
@@ -30,21 +37,17 @@
         from: "{{ email_sender }}"
         to: "{{ email_recipients }}"
         subject: "[RESUMEN EJECUTIVO] Certificación NetBackup CFS - ({{ hostvars[ansible_play_hosts[0]]['ansible_date_time']['date'] }})"
-        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html') }}"
+        body: "{{ htmlrepotsf | join('\n') }}"
+#        body: "{{ lookup('file', '{{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html') }}"
         subtype: html
       # delegate_to: localhost
       # run_once: true
       # become: true
 
-    - name: Leer Reporte Consolidado HTML para todos los nodos
-      shell: "cat {{ rutareporte }}reporte_{{ idhelix }}_consolidado_cfs_{{ ansible_date_time.date }}.html"
-      register: htmlrepotr
   delegate_to: "{{ srv_delegate }}"
   run_once: true
   become: true
 
-- set_fact:
-    htmlrepotsf: "{{ htmlrepotr.stdout_lines }}"
 
 - block:
     - copy:
